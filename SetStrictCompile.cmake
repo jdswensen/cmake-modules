@@ -19,3 +19,7 @@ set(compiler_warnings "\
 -Wconversion \
 -Wundef \
 ")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${compiler_warnings}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
