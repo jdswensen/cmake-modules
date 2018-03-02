@@ -13,7 +13,7 @@ function(gen_ctest_with_gtest)
     include_directories(${gen_ctest_with_gtest_EXTRA_INCLUDE})
 
     # Set short aliases
-    set(src_links ${gen_ctest_with_gtest_TEST_LINKS} gtest)
+    set(src_links ${gen_ctest_with_gtest_TEST_LINKS} pthread gtest)
     set(test_src ${gen_ctest_with_gtest_TEST_SOURCE})
     set(exe_name test-${PROJECT_NAME}-${gen_ctest_with_gtest_COMPONENT_NAME})
 
@@ -33,4 +33,3 @@ function(gen_ctest_with_gtest)
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME}
     )
 endfunction()
-
