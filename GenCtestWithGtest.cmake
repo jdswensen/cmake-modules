@@ -3,6 +3,18 @@ if(__gen_ctest_with_gtest)
 endif()
 set(__gen_ctest_with_gtest INCLUDED)
 
+if (HUNTER_ENABLED)
+    message(STATUS "GTest: use Hunter version")
+    hunter_add_package(GTest)
+    find_package(GTest CONFIG REQUIRED)
+    set(GTEST_LINK GTest::main)
+else()
+    message(STATUS "GTest: use system version")
+    find_library(gtest gtest.so)
+    set(GTEST_LINK gtest)
+endif()
+
+
 function(gen_ctest_with_gtest)
     set(options "")
     set(one_value_args COMPONENT_NAME)
@@ -13,7 +25,7 @@ function(gen_ctest_with_gtest)
     include_directories(${gen_ctest_with_gtest_EXTRA_INCLUDE})
 
     # Set short aliases
-    set(src_links ${gen_ctest_with_gtest_TEST_LINKS} pthread GTest::main)
+    set(src_links ${gen_ctest_with_gtest_TEST_LINKS} pthread ${GTEST_LINK})
     set(test_src ${gen_ctest_with_gtest_TEST_SOURCE})
     set(exe_name test-${PROJECT_NAME}-${gen_ctest_with_gtest_COMPONENT_NAME})
 
