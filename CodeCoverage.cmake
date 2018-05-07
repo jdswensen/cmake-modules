@@ -1,0 +1,23 @@
+if(__code_coverage)
+    return()
+endif()
+set(__code_coverage INCLUDED)
+
+option(COVERAGE "Build with code coverage enabled" OFF)
+
+function(set_coverage_flags)
+    if (CMAKE_BUILD_TYPE MATCHES Debug OR DEBUG)
+        if (COVERAGE MATCHES ON)
+            message(STATUS "Coverage enabled")
+
+            if ("${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang")
+                message(STATUS "Setting coverage flags for Apple Clang")
+            elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+                message(STATUS "Setting coverage flags for GNU GCC")
+                set(CMAKE_COVERAGE_FLAGS "-fprofile-arcs -ftest-coverage --coverage")
+                set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${CMAKE_COVERAGE_FLAGS}")
+                set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_COVERAGE_FLAGS}")
+            endif()
+        endif()
+    endif()
+endfunction()
