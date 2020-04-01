@@ -49,3 +49,28 @@ function(get_git_version var)
   message("-- git Version: ${GIT_VERSION}")
   set(${var} ${GIT_VERSION} PARENT_SCOPE)
 endfunction()
+
+function(get_git_version_discrete git_major git_minor git_patch)
+    get_git_version(version_string)
+    message(STATUS ${version_string})
+
+    # execute_process(COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags
+    #     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    #     OUTPUT_VARIABLE version_string
+    #     OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+    #string(REGEX MATCHALL "-.*$|[0-9]+" version_list ${version_string})
+    #message(STATUS ${version_list})
+    #list(GET ${version_list} 1 major)
+    string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" major "${version_string}")
+    string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" minor "${version_string}")
+    string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" patch "${version_string}")
+
+    message(STATUS ${major})
+    message(STATUS ${minor})
+    message(STATUS ${patch})
+
+    set(git_major ${major} CACHE INTERNAL "git major version")
+    set(${git_minor} 1 PARENT_SCOPE)
+    set(git_patch ${patch} PARENT_SCOPE)
+endfunction()
